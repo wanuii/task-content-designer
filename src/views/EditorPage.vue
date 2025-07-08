@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { VueDraggable } from "vue-draggable-plus";
 import { nanoid } from "nanoid";
+import { ElMessage } from "element-plus";
 import QuestionRender from "./QuestionRender.vue";
 
 // const loading = ref(true);
@@ -60,10 +61,30 @@ const canDropToPage = () => {
   return type === "title_option";
 };
 //#endregion ====================================
-
+// 設計完成
 const goToPreview = () => {
   sessionStorage.setItem("taskData", JSON.stringify(dataList.value));
   window.open("/preview", "_blank"); // 開新分頁預覽
+};
+// 匯出 JSON 檔
+const formattedJson = computed(() => JSON.stringify(dataList.value, null, 2));
+const exportJson = () => {
+  const blob = new Blob([formattedJson.value], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "data.json";
+  link.click();
+  URL.revokeObjectURL(url);
+};
+// 複製 JSON 到剪貼簿
+const copyJson = async () => {
+  try {
+    await navigator.clipboard.writeText(formattedJson.value);
+    ElMessage.success("已複製 JSON");
+  } catch (err) {
+    ElMessage.error("複製失敗");
+  }
 };
 </script>
 <template>
@@ -93,11 +114,11 @@ const goToPreview = () => {
         </div>
         <div
           style="
-            width: 25%;
+            width: 20%;
             border-radius: 20px;
             position: fixed;
             top: 5rem;
-            right: 0rem;
+            right: 2rem;
             z-index: 10;
           "
           class="sidebar flex flex-col gap-2 p-5"
@@ -146,6 +167,12 @@ const goToPreview = () => {
     </div>
     <el-dialog v-model="dialogVisible" title="JSON" width="500">
       <pre>{{ JSON.stringify(dataList, null, 2) }}</pre>
+      <template #footer>
+        <div>
+          <el-button @click="copyJson">複製</el-button>
+          <el-button type="primary" @click="exportJson">匯出</el-button>
+        </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -184,6 +211,12 @@ const goToPreview = () => {
 }
 .min-tool {
   display: none;
+}
+@media (max-width: 1100px) {
+  .sidebar {
+    right: 0rem !important ;
+    width: 25% !important;
+  }
 }
 @media (max-width: 744px) {
   .sidebar {
