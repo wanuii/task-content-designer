@@ -31,7 +31,7 @@ Task Content Designer 是一個以 Vue 3 為基礎所開發的任務內容設計
 
 ```bash
 # 1. 複製專案
-git clone https://github.com/your-username/task-content-designer.git
+git clone https://github.com/wanuii/task-content-designer.git
 
 # 2. 進入目錄
 cd task-content-designer
