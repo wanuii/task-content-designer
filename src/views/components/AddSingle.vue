@@ -23,11 +23,23 @@ const addOption = () => {
 };
 console.log(props);
 // 刪除選項
+// const removeOption = (value) => {
+//   formData.value.options = formData.value.options.filter(
+//     (opt) => opt.value !== value
+//   );
+// };
 const removeOption = (value) => {
+  // 如果只有一個選項，整組刪除（通知父元件刪除此元件）
+  if (formData.value.options.length === 1) {
+    emit("delete");
+    return;
+  }
+  // 否則只刪除指定選項
   formData.value.options = formData.value.options.filter(
     (opt) => opt.value !== value
   );
 };
+
 watch(
   formData,
   (val) => {
@@ -39,7 +51,7 @@ watch(
 <template>
   <div class="flex justify-end items-center gap-5" v-if="!props.isPreview">
     <el-button type="warning" @click="addOption">新增選項</el-button>
-    <i class="ri-expand-up-down-fill drag-handle"></i>
+    <i class="ri-expand-up-down-fill drag-handle cursor-pointer"></i>
   </div>
   <div
     v-for="item in formData.options"

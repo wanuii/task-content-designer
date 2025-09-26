@@ -26,7 +26,7 @@ watch(
   <div v-else>
     <div class="flex justify-end gap-5">
       <i class="ri-delete-bin-line cursor-pointer" @click="$emit('delete')"></i>
-      <i class="ri-expand-up-down-fill drag-handle"></i>
+      <i class="ri-expand-up-down-fill drag-handle cursor-pointer"></i>
     </div>
     <el-input
       v-model="formData.textarea"

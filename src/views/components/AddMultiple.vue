@@ -10,7 +10,7 @@ const props = defineProps({
   modelValue: Object,
   isPreview: Boolean,
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "delete"]);
 const formData = ref({
   options: props.modelValue?.options || [
     { label: "", value: "1", checked: false },
@@ -26,6 +26,10 @@ const addOption = () => {
   });
 };
 const removeOption = (item: OptionItem) => {
+  if (formData.value.options.length === 1) {
+    emit("delete"); // 通知父層刪除整題
+    return;
+  }
   formData.value.options = formData.value.options.filter((i) => i !== item);
 };
 
@@ -51,7 +55,7 @@ watch(
 <template>
   <div class="flex justify-end items-center gap-5" v-if="!props.isPreview">
     <el-button type="warning" @click="addOption"> 新增選項 </el-button>
-    <i class="ri-expand-up-down-fill drag-handle"></i>
+    <i class="ri-expand-up-down-fill drag-handle cursor-pointer"></i>
   </div>
   <div class="flex flex-col gap-3">
     <div class="flex items-center gap-3">

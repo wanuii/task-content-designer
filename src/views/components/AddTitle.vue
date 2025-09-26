@@ -36,9 +36,9 @@ watch(
       placeholder="請輸入標題"
     />
     <div class="flex gap-6" v-if="!props.isPreview">
-      <i class="ri-delete-bin-line" @click="handleDelete"></i>
-      <i class="ri-file-copy-line" @click="handleCopy"></i>
-      <i class="ri-expand-up-down-fill drag-handle"></i>
+      <i class="ri-delete-bin-line cursor-pointer" @click="handleDelete"></i>
+      <i class="ri-file-copy-line cursor-pointer" @click="handleCopy"></i>
+      <i class="ri-expand-up-down-fill drag-handle cursor-pointer"></i>
     </div>
   </div>
 </template>
